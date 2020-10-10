@@ -60,6 +60,9 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>FragmentJamella.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Memory">
       <HintPath>P:\DotHack\Fragment\Shortcut-Overlay\Memory.dll</HintPath>
@@ -6763,6 +6766,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Portraits\cw6ib_yl.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FragmentJamella.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FragmentJamella.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
