@@ -4,7 +4,6 @@ using Memory;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using FragmentJamella.Helpers;
 
 namespace FragmentJamella
 {
@@ -39,6 +38,10 @@ namespace FragmentJamella
             comboBox3.SelectedIndex = 0;
             comboBox5.SelectedIndex = 1;
             comboBox4.SelectedIndex = 1;
+            m.OpenProcess(PCSX2PROCESSNAME + ".exe");
+            tmr_Attach.Enabled = m.IsAdmin();
+            if (!m.IsAdmin()) label1.Text = "Not running as Admin";
+
         }
 
         private void tmr_Attach_Tick(object sender, EventArgs e)
@@ -157,6 +160,7 @@ namespace FragmentJamella
             label11.Text = (GetModelFromData(comboBox1.SelectedIndex, comboBox2.SelectedIndex, comboBox3.SelectedIndex, comboBox4.SelectedIndex, comboBox5.SelectedIndex));
             panel1.BackgroundImage = (Bitmap)Properties.Resources.ResourceManager.GetObject(label11.Text);
         }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int b2index = comboBox2.SelectedIndex, count = GetModelCountFromClass(comboBox1.SelectedIndex);
@@ -172,20 +176,6 @@ namespace FragmentJamella
             else comboBox2.SelectedIndex = b2index;
 
             comboBox_SelectedIndexChanged(sender, e);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Process[] proc = Process.GetProcessesByName(PCSX2PROCESSNAME);
-            foreach (Process p in proc)
-            {
-                IntPtr handle = p.MainWindowHandle;
-                RECT Rect = new RECT();
-                if (GetWindowRect(handle, ref Rect))
-                {
-                    Screenshot.CaptureScreen(Rect.left + 381 , Rect.top + 438,147, 168).Save(@"C:\Users\Katherine\Source\Repos\FragmentJamella\FragmentJamella\Resources\Portraits\test.png");
-                }
-            }
         }
     }
 }

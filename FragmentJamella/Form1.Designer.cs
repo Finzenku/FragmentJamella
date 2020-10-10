@@ -242,7 +242,6 @@
             // 
             // tmr_Attach
             // 
-            this.tmr_Attach.Enabled = true;
             this.tmr_Attach.Tick += new System.EventHandler(this.tmr_Attach_Tick);
             // 
             // panel1
