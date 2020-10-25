@@ -55,13 +55,19 @@
     <ManifestKeyFile>FragmentJamella_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>FragmentJamella.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Memory">
@@ -80,6 +86,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ByteConverstionHelper.cs" />
+    <Compile Include="Controls\NumericSliderWithLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NumericSliderWithLabel.Designer.cs">
+      <DependentUpon>NumericSliderWithLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatSliders.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\StatSliders.Designer.cs">
+      <DependentUpon>StatSliders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StatTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StatTest.Designer.cs">
+      <DependentUpon>StatTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,8 +112,18 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GameHelper.cs" />
+    <Compile Include="Helpers\StatHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\NumericSliderWithLabel.resx">
+      <DependentUpon>NumericSliderWithLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StatSliders.resx">
+      <DependentUpon>StatSliders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StatTest.resx">
+      <DependentUpon>StatTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,6 +137,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="FragmentJamella_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

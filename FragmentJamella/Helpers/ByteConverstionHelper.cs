@@ -40,6 +40,27 @@ namespace FragmentJamella.Helpers
                 return "";
             }
         }
+
+        public static int convertBytesToInt(byte[] data)
+        {
+            if (data != null)
+            {
+                switch (data.Length)
+                {
+                    case 1:
+                        return (int)data[0];
+                    case 2:
+                        return (int)data[0] | data[1] << 8;
+                    case 3:
+                        return (int)data[0] | data[1] << 8 | data[2] << 16;
+                    case 4:
+                        return BitConverter.ToInt32(data,0);
+                    default:
+                        return 0;
+                }
+            }
+            else return 0;
+        }
     }
 
 

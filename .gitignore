@@ -262,3 +262,6 @@ __pycache__/
 FragmentJamella/PortraitMaker.cs
 FragmentJamella/PortraitMaker.Designer.cs
 FragmentJamella/PortraitMaker.resx
+FragmentJamella/StatTest.resx
+FragmentJamella/StatTest.Designer.cs
+FragmentJamella/StatTest.cs

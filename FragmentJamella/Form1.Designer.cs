@@ -46,14 +46,22 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lbl_Name = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.lbl_Model = new System.Windows.Forms.Label();
             this.tmr_Attach = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lbl_bonus_patk = new System.Windows.Forms.Label();
+            this.lbl_bonus_pdef = new System.Windows.Forms.Label();
+            this.lbl_bonus_phit = new System.Windows.Forms.Label();
+            this.lbl_bonus_peva = new System.Windows.Forms.Label();
+            this.lbl_bonus_matk = new System.Windows.Forms.Label();
+            this.lbl_bonus_mdef = new System.Windows.Forms.Label();
+            this.lbl_bonus_mhit = new System.Windows.Forms.Label();
+            this.lbl_bonus_meva = new System.Windows.Forms.Label();
+            this.ckBox_Stats = new System.Windows.Forms.CheckBox();
+            this.statSliders1 = new FragmentJamella.Controls.StatSliders();
+            this.btn_Reset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tmr_PCSX2Check
@@ -75,7 +83,7 @@
             "Heavy Axe",
             "Long Arm",
             "Wavemaster"});
-            this.comboBox1.Location = new System.Drawing.Point(49, 86);
+            this.comboBox1.Location = new System.Drawing.Point(49, 61);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 3;
@@ -93,7 +101,7 @@
             "F",
             "G",
             "H"});
-            this.comboBox2.Location = new System.Drawing.Point(49, 114);
+            this.comboBox2.Location = new System.Drawing.Point(49, 89);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 21);
             this.comboBox2.TabIndex = 4;
@@ -109,7 +117,7 @@
             "Green (Wood)",
             "Brown (Earth)",
             "Purple (Darkness)"});
-            this.comboBox3.Location = new System.Drawing.Point(49, 141);
+            this.comboBox3.Location = new System.Drawing.Point(49, 116);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 5;
@@ -122,7 +130,7 @@
             "Skinny",
             "Medium",
             "Fat"});
-            this.comboBox5.Location = new System.Drawing.Point(49, 195);
+            this.comboBox5.Location = new System.Drawing.Point(49, 170);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(121, 21);
             this.comboBox5.TabIndex = 8;
@@ -135,7 +143,7 @@
             "Short",
             "Medium",
             "Tall"});
-            this.comboBox4.Location = new System.Drawing.Point(49, 168);
+            this.comboBox4.Location = new System.Drawing.Point(49, 143);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(121, 21);
             this.comboBox4.TabIndex = 7;
@@ -143,27 +151,28 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(49, 260);
+            this.button1.Location = new System.Drawing.Point(49, 257);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(121, 28);
             this.button1.TabIndex = 9;
-            this.button1.Text = "Change Class!";
+            this.button1.Text = "Update Character";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(139, 7);
+            this.label1.Location = new System.Drawing.Point(74, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 10;
             this.label1.Text = "Connecting..";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 94);
+            this.label2.Location = new System.Drawing.Point(8, 69);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 11;
@@ -172,7 +181,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 122);
+            this.label3.Location = new System.Drawing.Point(8, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 12;
@@ -181,7 +190,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 149);
+            this.label4.Location = new System.Drawing.Point(8, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(34, 13);
             this.label4.TabIndex = 14;
@@ -190,7 +199,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 176);
+            this.label5.Location = new System.Drawing.Point(8, 151);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(41, 13);
             this.label5.TabIndex = 13;
@@ -199,7 +208,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 203);
+            this.label6.Location = new System.Drawing.Point(8, 178);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 15;
@@ -208,7 +217,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(46, 20);
+            this.label7.Location = new System.Drawing.Point(157, 9);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(87, 13);
             this.label7.TabIndex = 16;
@@ -217,29 +226,12 @@
             // lbl_Name
             // 
             this.lbl_Name.AutoSize = true;
-            this.lbl_Name.Location = new System.Drawing.Point(139, 20);
+            this.lbl_Name.Location = new System.Drawing.Point(241, 9);
             this.lbl_Name.Name = "lbl_Name";
             this.lbl_Name.Size = new System.Drawing.Size(27, 13);
             this.lbl_Name.TabIndex = 17;
             this.lbl_Name.Text = "N/A";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(46, 33);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(76, 13);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "Current Model:";
-            // 
-            // lbl_Model
-            // 
-            this.lbl_Model.AutoSize = true;
-            this.lbl_Model.Location = new System.Drawing.Point(139, 33);
-            this.lbl_Model.Name = "lbl_Model";
-            this.lbl_Model.Size = new System.Drawing.Size(27, 13);
-            this.lbl_Model.TabIndex = 19;
-            this.lbl_Model.Text = "N/A";
+            this.lbl_Name.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tmr_Attach
             // 
@@ -247,7 +239,7 @@
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(175, 86);
+            this.panel1.Location = new System.Drawing.Point(175, 61);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(147, 168);
             this.panel1.TabIndex = 20;
@@ -256,51 +248,153 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(17, 56);
+            this.label9.Location = new System.Drawing.Point(116, 38);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(118, 18);
+            this.label9.Size = new System.Drawing.Size(124, 18);
             this.label9.TabIndex = 21;
-            this.label9.Text = "Change Class:";
+            this.label9.Text = "Class Changer:";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(46, 7);
+            this.label10.Location = new System.Drawing.Point(8, 9);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(68, 13);
             this.label10.TabIndex = 22;
             this.label10.Text = "Game Mode:";
             // 
-            // label11
+            // label13
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(246, 260);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "label11";
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(361, 38);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(105, 18);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "Bonus Stats:";
             // 
-            // label12
+            // lbl_bonus_patk
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(176, 260);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(64, 13);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "New Model:";
+            this.lbl_bonus_patk.AutoSize = true;
+            this.lbl_bonus_patk.Location = new System.Drawing.Point(343, 107);
+            this.lbl_bonus_patk.Name = "lbl_bonus_patk";
+            this.lbl_bonus_patk.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_patk.TabIndex = 27;
+            this.lbl_bonus_patk.Text = "+0.0";
+            // 
+            // lbl_bonus_pdef
+            // 
+            this.lbl_bonus_pdef.AutoSize = true;
+            this.lbl_bonus_pdef.Location = new System.Drawing.Point(343, 132);
+            this.lbl_bonus_pdef.Name = "lbl_bonus_pdef";
+            this.lbl_bonus_pdef.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_pdef.TabIndex = 28;
+            this.lbl_bonus_pdef.Text = "+0.0";
+            // 
+            // lbl_bonus_phit
+            // 
+            this.lbl_bonus_phit.AutoSize = true;
+            this.lbl_bonus_phit.Location = new System.Drawing.Point(343, 157);
+            this.lbl_bonus_phit.Name = "lbl_bonus_phit";
+            this.lbl_bonus_phit.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_phit.TabIndex = 29;
+            this.lbl_bonus_phit.Text = "+0.0";
+            // 
+            // lbl_bonus_peva
+            // 
+            this.lbl_bonus_peva.AutoSize = true;
+            this.lbl_bonus_peva.Location = new System.Drawing.Point(343, 182);
+            this.lbl_bonus_peva.Name = "lbl_bonus_peva";
+            this.lbl_bonus_peva.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_peva.TabIndex = 30;
+            this.lbl_bonus_peva.Text = "+0.0";
+            // 
+            // lbl_bonus_matk
+            // 
+            this.lbl_bonus_matk.AutoSize = true;
+            this.lbl_bonus_matk.Location = new System.Drawing.Point(343, 207);
+            this.lbl_bonus_matk.Name = "lbl_bonus_matk";
+            this.lbl_bonus_matk.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_matk.TabIndex = 31;
+            this.lbl_bonus_matk.Text = "+0.0";
+            // 
+            // lbl_bonus_mdef
+            // 
+            this.lbl_bonus_mdef.AutoSize = true;
+            this.lbl_bonus_mdef.Location = new System.Drawing.Point(343, 232);
+            this.lbl_bonus_mdef.Name = "lbl_bonus_mdef";
+            this.lbl_bonus_mdef.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_mdef.TabIndex = 32;
+            this.lbl_bonus_mdef.Text = "+0.0";
+            // 
+            // lbl_bonus_mhit
+            // 
+            this.lbl_bonus_mhit.AutoSize = true;
+            this.lbl_bonus_mhit.Location = new System.Drawing.Point(343, 257);
+            this.lbl_bonus_mhit.Name = "lbl_bonus_mhit";
+            this.lbl_bonus_mhit.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_mhit.TabIndex = 33;
+            this.lbl_bonus_mhit.Text = "+0.0";
+            // 
+            // lbl_bonus_meva
+            // 
+            this.lbl_bonus_meva.AutoSize = true;
+            this.lbl_bonus_meva.Location = new System.Drawing.Point(343, 282);
+            this.lbl_bonus_meva.Name = "lbl_bonus_meva";
+            this.lbl_bonus_meva.Size = new System.Drawing.Size(28, 13);
+            this.lbl_bonus_meva.TabIndex = 34;
+            this.lbl_bonus_meva.Text = "+0.0";
+            // 
+            // ckBox_Stats
+            // 
+            this.ckBox_Stats.AutoSize = true;
+            this.ckBox_Stats.Checked = true;
+            this.ckBox_Stats.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckBox_Stats.Location = new System.Drawing.Point(176, 264);
+            this.ckBox_Stats.Name = "ckBox_Stats";
+            this.ckBox_Stats.Size = new System.Drawing.Size(86, 17);
+            this.ckBox_Stats.TabIndex = 35;
+            this.ckBox_Stats.Text = "Update stats";
+            this.ckBox_Stats.UseVisualStyleBackColor = true;
+            // 
+            // statSliders1
+            // 
+            this.statSliders1.Location = new System.Drawing.Point(365, 61);
+            this.statSliders1.Name = "statSliders1";
+            this.statSliders1.Size = new System.Drawing.Size(183, 253);
+            this.statSliders1.TabIndex = 25;
+            this.statSliders1.ValueChanged += new System.EventHandler(this.UpdateBonusStats);
+            // 
+            // btn_Reset
+            // 
+            this.btn_Reset.Location = new System.Drawing.Point(49, 199);
+            this.btn_Reset.Name = "btn_Reset";
+            this.btn_Reset.Size = new System.Drawing.Size(120, 21);
+            this.btn_Reset.TabIndex = 36;
+            this.btn_Reset.Text = "Reset to current";
+            this.btn_Reset.UseVisualStyleBackColor = true;
+            this.btn_Reset.Click += new System.EventHandler(this.btn_Reset_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(342, 309);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
+            this.ClientSize = new System.Drawing.Size(551, 312);
+            this.Controls.Add(this.btn_Reset);
+            this.Controls.Add(this.ckBox_Stats);
+            this.Controls.Add(this.lbl_bonus_meva);
+            this.Controls.Add(this.lbl_bonus_mhit);
+            this.Controls.Add(this.lbl_bonus_mdef);
+            this.Controls.Add(this.lbl_bonus_matk);
+            this.Controls.Add(this.lbl_bonus_peva);
+            this.Controls.Add(this.lbl_bonus_phit);
+            this.Controls.Add(this.lbl_bonus_pdef);
+            this.Controls.Add(this.lbl_bonus_patk);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.statSliders1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.lbl_Model);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.lbl_Name);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -343,14 +437,22 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lbl_Name;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label lbl_Model;
         private System.Windows.Forms.Timer tmr_Attach;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
+        private Controls.StatSliders statSliders1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label lbl_bonus_patk;
+        private System.Windows.Forms.Label lbl_bonus_pdef;
+        private System.Windows.Forms.Label lbl_bonus_phit;
+        private System.Windows.Forms.Label lbl_bonus_peva;
+        private System.Windows.Forms.Label lbl_bonus_matk;
+        private System.Windows.Forms.Label lbl_bonus_mdef;
+        private System.Windows.Forms.Label lbl_bonus_mhit;
+        private System.Windows.Forms.Label lbl_bonus_meva;
+        private System.Windows.Forms.CheckBox ckBox_Stats;
+        private System.Windows.Forms.Button btn_Reset;
     }
 }
 
