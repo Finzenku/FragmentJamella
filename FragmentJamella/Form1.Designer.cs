@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tmr_PCSX2Check = new System.Windows.Forms.Timer(this.components);
             this.tmr_readMem = new System.Windows.Forms.Timer(this.components);
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -60,14 +59,9 @@
             this.lbl_bonus_mhit = new System.Windows.Forms.Label();
             this.lbl_bonus_meva = new System.Windows.Forms.Label();
             this.ckBox_Stats = new System.Windows.Forms.CheckBox();
-            this.statSliders1 = new FragmentJamella.Controls.StatSliders();
             this.btn_Reset = new System.Windows.Forms.Button();
+            this.statSliders1 = new FragmentJamella.Controls.StatSliders();
             this.SuspendLayout();
-            // 
-            // tmr_PCSX2Check
-            // 
-            this.tmr_PCSX2Check.Enabled = true;
-            this.tmr_PCSX2Check.Tick += new System.EventHandler(this.tmr_PCSX2Check_Tick);
             // 
             // tmr_readMem
             // 
@@ -235,6 +229,7 @@
             // 
             // tmr_Attach
             // 
+            this.tmr_Attach.Enabled = true;
             this.tmr_Attach.Tick += new System.EventHandler(this.tmr_Attach_Tick);
             // 
             // panel1
@@ -357,14 +352,6 @@
             this.ckBox_Stats.Text = "Update stats";
             this.ckBox_Stats.UseVisualStyleBackColor = true;
             // 
-            // statSliders1
-            // 
-            this.statSliders1.Location = new System.Drawing.Point(365, 61);
-            this.statSliders1.Name = "statSliders1";
-            this.statSliders1.Size = new System.Drawing.Size(183, 253);
-            this.statSliders1.TabIndex = 25;
-            this.statSliders1.ValueChanged += new System.EventHandler(this.UpdateBonusStats);
-            // 
             // btn_Reset
             // 
             this.btn_Reset.Location = new System.Drawing.Point(49, 199);
@@ -374,6 +361,14 @@
             this.btn_Reset.Text = "Reset to current";
             this.btn_Reset.UseVisualStyleBackColor = true;
             this.btn_Reset.Click += new System.EventHandler(this.btn_Reset_Click);
+            // 
+            // statSliders1
+            // 
+            this.statSliders1.Location = new System.Drawing.Point(365, 61);
+            this.statSliders1.Name = "statSliders1";
+            this.statSliders1.Size = new System.Drawing.Size(183, 253);
+            this.statSliders1.TabIndex = 25;
+            this.statSliders1.ValueChanged += new System.EventHandler(this.UpdateBonusStats);
             // 
             // Form1
             // 
@@ -421,7 +416,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer tmr_PCSX2Check;
         private System.Windows.Forms.Timer tmr_readMem;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;

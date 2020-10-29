@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
-using Memory;
 using System.Diagnostics;
-using System.Linq;
 using System.Drawing;
+using System.Text;
 using System.Runtime.InteropServices;
 using FragmentJamella.Helpers;
+using Binarysharp.MemoryManagement;
 
 namespace FragmentJamella
 {
     public partial class Form1 : Form
     {
         int gGameOffset;
-        Mem m = new Mem();
+        MemorySharp m;
+        Encoding enc = Encoding.GetEncoding(932);
+        
         private const string PCSX2PROCESSNAME = "pcsx2";
         bool pcsx2Running = false;
 
@@ -40,17 +42,15 @@ namespace FragmentJamella
             comboBox3.SelectedIndex = 0;
             comboBox5.SelectedIndex = 1;
             comboBox4.SelectedIndex = 1;
-            m.OpenProcess(PCSX2PROCESSNAME + ".exe");
-            tmr_Attach.Enabled = m.IsAdmin();
-            if (!m.IsAdmin()) label1.Text = "Not running as Admin";
 
         }
 
         private void tmr_Attach_Tick(object sender, EventArgs e)
         {
+            PCSX2Check_Tick();
             if (pcsx2Running)
             {
-                m.OpenProcess(PCSX2PROCESSNAME + ".exe");
+                m = new MemorySharp(Process.GetProcessesByName(PCSX2PROCESSNAME)[0]);
                 SetGameOffset();
                 SetComboBoxesFromData();
                 tmr_Attach.Enabled = false;
@@ -59,7 +59,17 @@ namespace FragmentJamella
 
         }
 
-        private void tmr_PCSX2Check_Tick(object sender, EventArgs e)
+        private void tmr_readMem_Tick(object sender, EventArgs e)
+        {
+            PCSX2Check_Tick();
+            if (pcsx2Running)
+            {
+                SetGameOffset();
+                lbl_Name.Text = m.ReadString(new IntPtr(gGameOffset + GameHelper.PLAYER_NAME), enc, false);
+            }
+        }
+
+        private void PCSX2Check_Tick()
         {
             Process[] pcsx2 = Process.GetProcessesByName(PCSX2PROCESSNAME);
 
@@ -69,18 +79,8 @@ namespace FragmentJamella
             }
             else
             {
-                tmr_PCSX2Check.Enabled = false;
                 MessageBox.Show("PCSX2 not detected. Closing.");
                 this.Close();
-            }
-        }
-
-        private void tmr_readMem_Tick(object sender, EventArgs e)
-        {
-            if (pcsx2Running)
-            {
-                SetGameOffset();
-                lbl_Name.Text = m.ReadString((gGameOffset + 0xC).ToString("X8"));
             }
         }
 
@@ -88,31 +88,29 @@ namespace FragmentJamella
         {
             if (pcsx2Running)
             {
-                if (GameHelper.GetCurrentElfFile(m.ReadByte(GameHelper.LUI_HEAP)) == GameHelper.CurrentElf.ONLINE)
+                if (GameHelper.GetCurrentElfFile(m.Read<byte>(new IntPtr(GameHelper.LUI_HEAP),false)) == GameHelper.CurrentElf.ONLINE)
                 {
                     label1.Text = "Online";
-                    gGameOffset = m.ReadInt(GameHelper.ONLINE_PLAYER_POINTER) + 0x20000000;
+                    gGameOffset = m.Read<int>(new IntPtr(GameHelper.ONLINE_PLAYER_POINTER),false) + 0x20000000;
                 }
-                if (GameHelper.GetCurrentElfFile(m.ReadByte(GameHelper.LUI_HEAP)) == GameHelper.CurrentElf.OFFLINE)
+                if (GameHelper.GetCurrentElfFile(m.Read<byte>(new IntPtr(GameHelper.LUI_HEAP),false)) == GameHelper.CurrentElf.OFFLINE)
                 {
                     label1.Text = "Offline";
-                    gGameOffset = m.ReadInt(GameHelper.OFFLINE_PLAYER_POINTER) + 0x20000000;
+                    gGameOffset = m.Read<int>(new IntPtr(GameHelper.OFFLINE_PLAYER_POINTER),false) + 0x20000000;
                 }
-
             }
         }
 
         private void SetComboBoxesFromData()
         {
-            int i = m.ReadByte((gGameOffset + 0x3759).ToString("X8"));
+            int i = m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_CLASS), false);
             if (i < comboBox1.Items.Count) comboBox1.SelectedIndex = i;
-            i = m.ReadByte((gGameOffset + 0x375A).ToString("X8"));
+            i = m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_MODEL), false);
             if (i < comboBox2.Items.Count) comboBox2.SelectedIndex = i;
-            i = m.ReadByte((gGameOffset + 0x375B).ToString("X8"));
+            i = m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_COLOR), false);
             if (i < comboBox3.Items.Count) comboBox3.SelectedIndex = i;
-            i = m.ReadByte((gGameOffset + 0x375C).ToString("X8"));
+            i = m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE), false);
             if ((i / 3) < comboBox4.Items.Count) comboBox4.SelectedIndex = (i / 3);
-            i = m.ReadByte((gGameOffset + 0x375C).ToString("X8"));
             if ((i % 3) < comboBox5.Items.Count) comboBox5.SelectedIndex = (i % 3);
         }
 
@@ -160,40 +158,39 @@ namespace FragmentJamella
         {
             string newmodel = GetModelFromComboBoxes();
 
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_MODEL_STRING, gGameOffset), "string", newmodel);
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_CLASS, gGameOffset), "byte", comboBox1.SelectedIndex.ToString("X1"));
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_CHARACTER_CLASS, gGameOffset), "byte", comboBox1.SelectedIndex.ToString("X1"));
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_CHARACTER_MODEL, gGameOffset), "byte", comboBox2.SelectedIndex.ToString("X1"));
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_CHARACTER_COLOR, gGameOffset), "byte", comboBox3.SelectedIndex.ToString("X1"));
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_CHARACTER_SIZE, gGameOffset), "byte", (3 * comboBox4.SelectedIndex + comboBox5.SelectedIndex).ToString("X1"));
-
+            m.WriteString(new IntPtr(gGameOffset + GameHelper.PLAYER_MODEL_STRING), newmodel, enc, false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_CLASS), (byte)comboBox1.SelectedIndex, false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_CLASS), (byte)comboBox1.SelectedIndex, false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_MODEL), (byte)comboBox2.SelectedIndex, false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_COLOR), (byte)comboBox3.SelectedIndex, false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE), (byte)(3*comboBox4.SelectedIndex + comboBox5.SelectedIndex), false);
             if (ckBox_Stats.Checked) updateStats();
         }
 
         private void updateStats()
         {
-            string model = m.ReadString(CalculateNewAddress(GameHelper.PLAYER_MODEL_STRING, gGameOffset));
-            int level = ByteConverstionHelper.convertBytesToInt(m.ReadBytes(CalculateNewAddress(GameHelper.PLAYER_STATS_LEVEL, gGameOffset), 2));
+            string model = m.ReadString(new IntPtr(gGameOffset + GameHelper.PLAYER_MODEL_STRING), enc, false);
+            int level = m.Read<short>(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_LEVEL), false);
             int[] newstats = StatHelper.GetStats(model, level, statSliders1.GetSliders());
-
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_HP, gGameOffset), "2bytes", newstats[0].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_SP, gGameOffset), "2bytes", newstats[1].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_PATK, gGameOffset), "2bytes", newstats[2].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_PDEF, gGameOffset), "2bytes", newstats[3].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_PHIT, gGameOffset), "2bytes", newstats[4].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_PEVA, gGameOffset), "2bytes", newstats[5].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_MATK, gGameOffset), "2bytes", newstats[6].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_MDEF, gGameOffset), "2bytes", newstats[7].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_MHIT, gGameOffset), "2bytes", newstats[8].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_MEVA, gGameOffset), "2bytes", newstats[9].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_EARTH, gGameOffset), "2bytes", newstats[10].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_WATER, gGameOffset), "2bytes", newstats[11].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_FIRE, gGameOffset), "2bytes", newstats[12].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_WOOD, gGameOffset), "2bytes", newstats[13].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_THUNDER, gGameOffset), "2bytes", newstats[14].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_DARK, gGameOffset), "2bytes", newstats[15].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_MIND, gGameOffset), "2bytes", newstats[16].ToString());
-            m.WriteMemory(CalculateNewAddress(GameHelper.PLAYER_STATS_BODY, gGameOffset), "2bytes", newstats[17].ToString());
+            
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_HP), (short)newstats[0], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_SP), (short)newstats[1], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PATK), (short)newstats[2], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PDEF), (short)newstats[3], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PHIT), (short)newstats[4], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PEVA), (short)newstats[5], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MATK), (short)newstats[6], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MDEF), (short)newstats[7], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MHIT), (short)newstats[8], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MEVA), (short)newstats[9], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_EARTH), (short)newstats[10], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_WATER), (short)newstats[11], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_FIRE), (short)newstats[12], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_WOOD), (short)newstats[13], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_THUNDER), (short)newstats[14], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_DARK), (short)newstats[15], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MIND), (short)newstats[16], false);
+            m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_BODY), (short)newstats[17], false);
         }
 
         private void button1_Click(object sender, EventArgs e)
