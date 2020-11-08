@@ -2,8 +2,9 @@
 A character editor for .hack//fragment
 
 ### Features:  
-Change the class and model of your currently loaded character
-* Does not change stats or equipped items other than weapons
+Change the class and model of your currently loaded character with the option to update your stats, including the bonus stats from character creation.
+* Does not change equipped items other than weapons
+  * It is recommended that you have a non-rare weapon equipped before changing classes. May cause "FILE NONE" soft-lock otherwise.
 
 ### Usage:  
 **Needs to be run with elevated privileges**  
@@ -12,14 +13,14 @@ Select the class/model/color/height/width that you want to change to
 Click "Change Class!" button  
 Save your character immediately (It is highly recommended that you *do not* play before saving and reloading. May cause soft locks or crashes, especially online)  
 
-##Linux Support
+### Linux Support
 for the linux version the program needs root privileges.
 if you are running x86 machine , I would suggest to build the application on the x86 machine as the binaries in the release were not tested on x86
 
-##Linux Build
+### Linux Build
 To build on Linux, please install git,cmake,make and mono-complete 
 clone the repo and run the linuxBuild.sh script 
 
 ### Credits:  
-Process attaching and memory editing copied from https://github.com/Zero1UP/fragment-shortcut-overlay
+Process attaching and memory editing copied from https://github.com/Zero1UP/fragment-shortcut-overlay  
 Linux Memory Access Provided by Zackmon https://github.com/Zackmon/SimpleLinuxMemoryAccess
