@@ -28,6 +28,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,12 +49,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
+ <!-- <PropertyGroup>
     <ManifestCertificateThumbprint>AB4C446A7EDB963E71FA3C5537FE220C5685EB59</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>FragmentJamella_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
+  </PropertyGroup>-->
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
@@ -102,12 +103,6 @@
     <Compile Include="Controls\StatSliders.Designer.cs">
       <DependentUpon>StatSliders.cs</DependentUpon>
     </Compile>
-    <Compile Include="StatTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StatTest.Designer.cs">
-      <DependentUpon>StatTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +111,9 @@
     </Compile>
     <Compile Include="Helpers\GameHelper.cs" />
     <Compile Include="Helpers\StatHelper.cs" />
+    <Compile Include="Memory\IMemoryManagement.cs" />
+    <Compile Include="Memory\LinuxMemoryManagement.cs" />
+    <Compile Include="Memory\WindowsMemoryManagement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\NumericSliderWithLabel.resx">
@@ -123,9 +121,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatSliders.resx">
       <DependentUpon>StatSliders.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StatTest.resx">
-      <DependentUpon>StatTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -143,7 +138,6 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="FragmentJamella_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -4,15 +4,18 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using FragmentJamella.Helpers;
 using Binarysharp.MemoryManagement;
+using FragmentJamella.Memory;
 
 namespace FragmentJamella
 {
     public partial class Form1 : Form
     {
         int gGameOffset;
-        MemorySharp m;
+        //MemorySharp m;
+        private IMemoryManagement m;
         Encoding enc = Encoding.GetEncoding(932);
         
         private const string PCSX2PROCESSNAME = "pcsx2";
@@ -50,7 +53,17 @@ namespace FragmentJamella
             PCSX2Check_Tick();
             if (pcsx2Running)
             {
-                m = new MemorySharp(Process.GetProcessesByName(PCSX2PROCESSNAME)[0]);
+                if (System.Environment.OSVersion.Platform == PlatformID.Unix ||
+                    System.Environment.OSVersion.Platform == PlatformID.MacOSX)
+                {
+                    m = new LinuxMemoryManagement(Process.GetProcessesByName(PCSX2PROCESSNAME)[0]);
+                }
+                else
+                {
+                    m = new WindowsMemoryManagement(Process.GetProcessesByName(PCSX2PROCESSNAME)[0]);    
+                }
+
+                
                 SetGameOffset();
                 SetComboBoxesFromData();
                 tmr_Attach.Enabled = false;
@@ -71,6 +84,17 @@ namespace FragmentJamella
 
         private void PCSX2Check_Tick()
         {
+            if (System.Environment.OSVersion.Platform == PlatformID.Unix ||
+                System.Environment.OSVersion.Platform == PlatformID.MacOSX)
+            {
+                if (LinuxMemoryManagement.getuid() != 0)
+                {
+                    MessageBox.Show("Not running as root");
+                    this.Close();
+                }
+            }
+            
+            
             Process[] pcsx2 = Process.GetProcessesByName(PCSX2PROCESSNAME);
 
             if (pcsx2.Length > 0)
@@ -82,6 +106,9 @@ namespace FragmentJamella
                 MessageBox.Show("PCSX2 not detected. Closing.");
                 this.Close();
             }
+            
+            
+            
         }
 
         private void SetGameOffset()
