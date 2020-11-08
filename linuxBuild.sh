@@ -14,6 +14,11 @@ cp libMemoryManagement.so ../FragmentJamella/LinuxLibraries/
 
 cd ..
 
+cd FragmentJamella
+
+msbuild -t:restore
+cd ../
+
 msbuild -property:Configuration=Release
 
 cd FragmentJamella/bin/Release/
