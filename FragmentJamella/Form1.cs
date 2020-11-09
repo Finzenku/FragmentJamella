@@ -14,27 +14,16 @@ namespace FragmentJamella
     public partial class Form1 : Form
     {
         int gGameOffset;
-        //MemorySharp m;
         private IMemoryManagement m;
-        Encoding enc = Encoding.GetEncoding(932);
+        Encoding enc;
         
         private const string PCSX2PROCESSNAME = "pcsx2";
         bool pcsx2Running = false;
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
-
         public Form1()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            enc = Encoding.GetEncoding("Shift-JIS");
             InitializeComponent();
         }
 
@@ -45,7 +34,6 @@ namespace FragmentJamella
             comboBox3.SelectedIndex = 0;
             comboBox5.SelectedIndex = 1;
             comboBox4.SelectedIndex = 1;
-
         }
 
         private void tmr_Attach_Tick(object sender, EventArgs e)
@@ -90,6 +78,7 @@ namespace FragmentJamella
                 if (LinuxMemoryManagement.getuid() != 0)
                 {
                     MessageBox.Show("Not running as root");
+                    tmr_Attach.Enabled = false;
                     this.Close();
                 }
             }
@@ -99,11 +88,13 @@ namespace FragmentJamella
 
             if (pcsx2.Length > 0)
             {
+                lbl_Name.Text = pcsx2[0].ProcessName;
                 pcsx2Running = true;
             }
             else
             {
                 MessageBox.Show("PCSX2 not detected. Closing.");
+                tmr_Attach.Enabled = false;
                 this.Close();
             }
             
