@@ -1,5 +1,10 @@
 #bin/bash
 
+curl -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+
+mono nuget.exe restore FragmentJamella.sln
+
+
 if [ -d "SimpleLinuxMemoryAccess" ]; then rm -Rf SimpleLinuxMemoryAccess; fi
 if [ -d "builds" ]; then rm -Rf builds; fi
 
@@ -14,10 +19,7 @@ cp libMemoryManagement.so ../FragmentJamella/LinuxLibraries/
 
 cd ..
 
-cd FragmentJamella
 
-msbuild -t:restore
-cd ../
 
 msbuild -property:Configuration=Release
 
@@ -46,6 +48,10 @@ monoRuntimeName=mono-6.8.0-debian-10-x64
 mkbundle --fetch-target $monoRuntimeName
 mkbundle -o ../../../builds/FragmentJamella-$monoRuntimeName --cross $monoRuntimeName FragmentJamella.exe --library libSimpleLinuxMemoryAccess,../../../SimpleLinuxMemoryAccess/libSimpleLinuxMemoryAccess.so --machine-config /etc/mono/4.5/machine.config --no-config
 
+if [ -f "FragmentJamella.Windows.zip" ]; then rm - FragmentJamella.Windows.zip; fi
 
+zip -r FragmentJamella.Windows.zip .
+
+cp FragmentJamella.Windows.zip ../../../builds/
 
 cd ../../../
