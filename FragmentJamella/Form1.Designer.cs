@@ -248,10 +248,11 @@
             // 
             // panel1
             // 
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel1.Location = new System.Drawing.Point(204, 70);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(172, 194);
+            this.panel1.Size = new System.Drawing.Size(147, 168);
             this.panel1.TabIndex = 20;
             // 
             // label9
@@ -279,7 +280,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
-            this.label13.Location = new System.Drawing.Point(421, 44);
+            this.label13.Location = new System.Drawing.Point(380, 44);
             this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(105, 18);
@@ -289,7 +290,7 @@
             // lbl_bonus_patk
             // 
             this.lbl_bonus_patk.AutoSize = true;
-            this.lbl_bonus_patk.Location = new System.Drawing.Point(400, 123);
+            this.lbl_bonus_patk.Location = new System.Drawing.Point(359, 123);
             this.lbl_bonus_patk.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_patk.Name = "lbl_bonus_patk";
             this.lbl_bonus_patk.Size = new System.Drawing.Size(30, 15);
@@ -299,7 +300,7 @@
             // lbl_bonus_pdef
             // 
             this.lbl_bonus_pdef.AutoSize = true;
-            this.lbl_bonus_pdef.Location = new System.Drawing.Point(400, 152);
+            this.lbl_bonus_pdef.Location = new System.Drawing.Point(359, 152);
             this.lbl_bonus_pdef.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_pdef.Name = "lbl_bonus_pdef";
             this.lbl_bonus_pdef.Size = new System.Drawing.Size(30, 15);
@@ -309,7 +310,7 @@
             // lbl_bonus_phit
             // 
             this.lbl_bonus_phit.AutoSize = true;
-            this.lbl_bonus_phit.Location = new System.Drawing.Point(400, 181);
+            this.lbl_bonus_phit.Location = new System.Drawing.Point(359, 181);
             this.lbl_bonus_phit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_phit.Name = "lbl_bonus_phit";
             this.lbl_bonus_phit.Size = new System.Drawing.Size(30, 15);
@@ -319,7 +320,7 @@
             // lbl_bonus_peva
             // 
             this.lbl_bonus_peva.AutoSize = true;
-            this.lbl_bonus_peva.Location = new System.Drawing.Point(400, 210);
+            this.lbl_bonus_peva.Location = new System.Drawing.Point(359, 210);
             this.lbl_bonus_peva.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_peva.Name = "lbl_bonus_peva";
             this.lbl_bonus_peva.Size = new System.Drawing.Size(30, 15);
@@ -329,7 +330,7 @@
             // lbl_bonus_matk
             // 
             this.lbl_bonus_matk.AutoSize = true;
-            this.lbl_bonus_matk.Location = new System.Drawing.Point(400, 239);
+            this.lbl_bonus_matk.Location = new System.Drawing.Point(359, 239);
             this.lbl_bonus_matk.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_matk.Name = "lbl_bonus_matk";
             this.lbl_bonus_matk.Size = new System.Drawing.Size(30, 15);
@@ -339,7 +340,7 @@
             // lbl_bonus_mdef
             // 
             this.lbl_bonus_mdef.AutoSize = true;
-            this.lbl_bonus_mdef.Location = new System.Drawing.Point(400, 268);
+            this.lbl_bonus_mdef.Location = new System.Drawing.Point(359, 268);
             this.lbl_bonus_mdef.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_mdef.Name = "lbl_bonus_mdef";
             this.lbl_bonus_mdef.Size = new System.Drawing.Size(30, 15);
@@ -349,7 +350,7 @@
             // lbl_bonus_mhit
             // 
             this.lbl_bonus_mhit.AutoSize = true;
-            this.lbl_bonus_mhit.Location = new System.Drawing.Point(400, 297);
+            this.lbl_bonus_mhit.Location = new System.Drawing.Point(359, 297);
             this.lbl_bonus_mhit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_mhit.Name = "lbl_bonus_mhit";
             this.lbl_bonus_mhit.Size = new System.Drawing.Size(30, 15);
@@ -359,7 +360,7 @@
             // lbl_bonus_meva
             // 
             this.lbl_bonus_meva.AutoSize = true;
-            this.lbl_bonus_meva.Location = new System.Drawing.Point(400, 325);
+            this.lbl_bonus_meva.Location = new System.Drawing.Point(359, 325);
             this.lbl_bonus_meva.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_bonus_meva.Name = "lbl_bonus_meva";
             this.lbl_bonus_meva.Size = new System.Drawing.Size(30, 15);
@@ -392,17 +393,19 @@
             // 
             // statSliders1
             // 
-            this.statSliders1.Location = new System.Drawing.Point(0, 0);
+            this.statSliders1.Location = new System.Drawing.Point(386, 70);
             this.statSliders1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.statSliders1.Name = "statSliders1";
-            this.statSliders1.Size = new System.Drawing.Size(214, 292);
-            this.statSliders1.TabIndex = 0;
+            this.statSliders1.Size = new System.Drawing.Size(214, 289);
+            this.statSliders1.TabIndex = 37;
+            this.statSliders1.ValueChanged += new System.EventHandler(this.UpdateBonusStats);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 360);
+            this.ClientSize = new System.Drawing.Size(615, 360);
+            this.Controls.Add(this.statSliders1);
             this.Controls.Add(this.btn_Reset);
             this.Controls.Add(this.ckBox_Stats);
             this.Controls.Add(this.lbl_bonus_meva);
@@ -463,7 +466,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private Controls.StatSliders statSliders1;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label lbl_bonus_patk;
         private System.Windows.Forms.Label lbl_bonus_pdef;
@@ -475,6 +477,7 @@
         private System.Windows.Forms.Label lbl_bonus_meva;
         private System.Windows.Forms.CheckBox ckBox_Stats;
         private System.Windows.Forms.Button btn_Reset;
+        private Controls.StatSliders statSliders1;
     }
 }
 
