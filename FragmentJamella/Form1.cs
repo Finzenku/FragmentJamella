@@ -57,7 +57,6 @@ namespace FragmentJamella
                 tmr_Attach.Enabled = false;
                 tmr_readMem.Enabled = true;
             }
-
         }
 
         private void tmr_readMem_Tick(object sender, EventArgs e)

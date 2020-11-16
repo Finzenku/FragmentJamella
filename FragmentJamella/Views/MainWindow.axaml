@@ -1,0 +1,48 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:FragmentJamella.ViewModels;assembly=FragmentJamella"
+        xmlns:views="clr-namespace:FragmentJamella.Views"
+        xmlns:viewModels="clr-namespace:FragmentJamella.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ext="clr-namespace:FragmentJamella.Helpers;assembly=FragmentJamella"
+        Width="580" Height="350"
+        CanResize="False"
+        x:Class="FragmentJamella.Views.MainWindow"
+        Icon="/Resources/FragmentJamella.ico"
+        Title="Jamella">
+  
+  <Window.DataContext>
+    <viewModels:MainWindowViewModel/>
+  </Window.DataContext>
+
+  <Window.Resources>
+    <ext:BitmapAssetValueConverter x:Key="variableImage"/>
+  </Window.Resources>
+
+  <Canvas>
+    <StackPanel Canvas.Top="20" Canvas.Left="20">
+      <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="4">Change Class:</TextBlock>
+      <DockPanel>
+        <StackPanel Width="130" Margin="4">
+          <ComboBox Height="26" Margin="2" Items="{Binding Classes}" SelectedIndex="{Binding SelectedClass}"/>
+          <ComboBox MaxDropDownHeight="300" Height="26" Margin="2" Items="{Binding Models}" SelectedIndex="{Binding SelectedModel}"/>
+          <ComboBox Height="26" Margin="2" Items="{Binding Colors}" SelectedIndex="{Binding SelectedColor}"/>
+          <ComboBox Height="26" Margin="2" Items="{Binding Heights}" SelectedIndex="{Binding SelectedHeight}"/>
+          <ComboBox Height="26" Margin="2" Items="{Binding Widths}" SelectedIndex="{Binding SelectedWidth}"/>
+          <Button Margin="2" Width="126" HorizontalAlignment="Left" Command="{Binding ResetModel}">Reset to current</Button>
+        </StackPanel>
+        <Image DockPanel.Dock="Right" Margin="2" Source="{Binding ModelImage, Converter={StaticResource variableImage}}"/>
+      </DockPanel>
+    </StackPanel>
+    <StackPanel Canvas.Top="20" Canvas.Right="10">
+      <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="4">Bonus Stats:</TextBlock>
+      <views:StatSliderView DataContext="{Binding StatSlider}"/>
+    </StackPanel>
+    <StackPanel Canvas.Bottom="50" Canvas.Left="50" Orientation="Horizontal">
+      <Button Margin="2" Command="{Binding UpdateCharacter}">Update Character</Button>
+      <CheckBox IsChecked="{Binding UpdateStats}" Margin="2">Update Stats</CheckBox>
+    </StackPanel>
+  </Canvas>
+  
+</Window>

@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FragmentJamella.ViewModels"
+             MaxWidth="350" MaxHeight="80"
+             MinWidth="150"
+             x:Class="FragmentJamella.Views.NumericSliderView">
+  <UserControl.DataContext>
+    <viewModels:NumericSliderViewModel/>
+  </UserControl.DataContext>
+  <DockPanel>
+    <TextBlock VerticalAlignment="Center" FontFamily="Consolas"
+               Text="{Binding Text}" MinWidth="24" DockPanel.Dock="Left" />
+    
+    <NumericUpDown Value="{Binding Value}" Maximum="{Binding Maximum}" Minimum="0"
+                   Name="Numeric" Increment="1" DockPanel.Dock="Left"
+                   BorderThickness="0.2" BorderBrush="Transparent" 
+                   VerticalAlignment="Center" ShowButtonSpinner="False"  />
+    
+    <Slider Value="{Binding #Numeric.Value}" Maximum="99" Minimum="0"
+            Name="NumSlider" SmallChange="1" LargeChange="5"
+            TickFrequency="1" IsSnapToTickEnabled="True"
+            VerticalAlignment="Center"/>
+  </DockPanel>
+</UserControl>
