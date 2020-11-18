@@ -21,6 +21,12 @@
   </Window.Resources>
 
   <Canvas>
+    <StackPanel Canvas.Top="5" Canvas.Left="15" Orientation="Horizontal">
+      <TextBlock Margin="2">Game Mode: </TextBlock>
+      <TextBlock Margin="2" Width="36" Text="{Binding GameMode}"/>
+      <TextBlock Margin="20 2 2 2">Character Name:</TextBlock>
+      <TextBlock Margin="2" Text="{Binding CharacterName}"/>
+    </StackPanel>
     <StackPanel Canvas.Top="20" Canvas.Left="20">
       <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="4">Change Class:</TextBlock>
       <DockPanel>
@@ -39,9 +45,12 @@
       <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="4">Bonus Stats:</TextBlock>
       <views:StatSliderView DataContext="{Binding StatSlider}"/>
     </StackPanel>
-    <StackPanel Canvas.Bottom="50" Canvas.Left="50" Orientation="Horizontal">
-      <Button Margin="2" Command="{Binding UpdateCharacter}">Update Character</Button>
-      <CheckBox IsChecked="{Binding UpdateStats}" Margin="2">Update Stats</CheckBox>
+    <StackPanel Canvas.Bottom="50" Canvas.Left="50">
+      <TextBlock Margin="2" Text="{Binding Warning}"/>
+      <StackPanel Orientation="Horizontal">
+        <Button Margin="2" IsEnabled="{Binding CanUpdate}" Command="{Binding UpdateCharacter}">Update Character</Button>
+        <CheckBox IsChecked="{Binding UpdateStats}" Margin="2">Update Stats</CheckBox>
+      </StackPanel>
     </StackPanel>
   </Canvas>
   

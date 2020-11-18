@@ -10,16 +10,18 @@ using System.Text;
 using Avalonia.Data.Converters;
 using FragmentJamella.Models;
 using System.Reactive;
+using Avalonia.Threading;
 
 namespace FragmentJamella.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private bool _updateStats;
+        private bool _updateStats, _canUpdate;
         private int _sclass, _smodel, _scolor, _sheight, _swidth;
-        private string _smodelname;
+        private string _smodelname, _gamemode, _charName, _warning;
         
         public bool UpdateStats { get => _updateStats; set => this.RaiseAndSetIfChanged(ref _updateStats, value); }
+        public bool CanUpdate { get => _canUpdate; set => this.RaiseAndSetIfChanged(ref _canUpdate, value); }
         public int SelectedClass { get => _sclass; set => this.RaiseAndSetIfChanged(ref _sclass, value); }
         public int SelectedModel { get => _smodel; set => this.RaiseAndSetIfChanged(ref _smodel, value); }
         public int SelectedColor { get => _scolor; set => this.RaiseAndSetIfChanged(ref _scolor, value); }
@@ -27,6 +29,9 @@ namespace FragmentJamella.ViewModels
         public int SelectedWidth { get => _swidth; set => this.RaiseAndSetIfChanged(ref _swidth, value); }
         public string SelectedModelName { get => _smodelname; set => this.RaiseAndSetIfChanged(ref _smodelname, value); }
         public string ModelImage { get => $"/Resources/Portraits/{SelectedModelName}.jpeg"; }
+        public string GameMode { get => _gamemode; set => this.RaiseAndSetIfChanged(ref _gamemode, value); }
+        public string CharacterName { get => _charName; set => this.RaiseAndSetIfChanged(ref _charName, value); }
+        public string Warning { get => _warning; set => this.RaiseAndSetIfChanged(ref _warning, value); }
 
         public ObservableCollection<string> Classes { get; set; }
         public ObservableCollection<string> Models { get; set; }
@@ -67,6 +72,20 @@ namespace FragmentJamella.ViewModels
                      UpdateBonusStats();
                  });
             this.WhenAnyValue(x => x.StatSlider.Points.Value).Subscribe(x => UpdateBonusStats());
+
+            var updateTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300), IsEnabled = true };
+            updateTimer.Tick += (sender, e) =>
+            {
+                if (!CanUpdate && logic.Update_Tick())
+                {
+                    CanUpdate = true;
+                    ResetToCurrentModel();
+                }
+                else CanUpdate = logic.Update_Tick();
+                GameMode = logic.GetGameMode();
+                CharacterName = logic.GetCharacterName();
+                Warning = logic.GetWarning();
+            };
         }
 
         private void UpdateCharacterModel()
