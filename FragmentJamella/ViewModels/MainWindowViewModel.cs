@@ -120,5 +120,9 @@ namespace FragmentJamella.ViewModels
             if (ind < count && ind != -1) SelectedModel = ind;
             else SelectedModel = 0;
         }
+
+        
     }
+    
+    
 }

@@ -20,7 +20,7 @@ namespace FragmentJamella.Models
         public JamellaLogic()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            enc = Encoding.GetEncoding(932);
+            enc = Encoding.GetEncoding("Shift-JIS");
             Update_Tick();
         }
 
@@ -229,5 +229,7 @@ namespace FragmentJamella.Models
                 m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_BODY), (short)newstats[17], false);
             }
         }
+        
+        
     }
 }
