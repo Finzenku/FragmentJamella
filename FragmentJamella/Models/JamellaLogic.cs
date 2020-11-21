@@ -14,7 +14,7 @@ namespace FragmentJamella.Models
         private IMemoryManagement m = null;
         private readonly Encoding enc;
 
-        private const string PCSX2PROCESSNAME = "pcsx2";
+        private const string PCSX2PROCESSNAME = "docker";
         private bool pcsx2Running = false, loggedIn = false;
 
         public JamellaLogic()
