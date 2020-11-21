@@ -2243,9 +2243,8 @@
     <None Remove="Resources\Portraits\cw6ib_pp.jpeg" />
     <None Remove="Resources\Portraits\cw6ib_rd.jpeg" />
     <None Remove="Resources\Portraits\cw6ib_yl.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Memory\libSimpleLinuxMemoryAccess.so" />
-    <EmbeddedResource Include="Memory\libSimpleLinuxMemoryAccess.so" />
+    <None Update="Memory\libSimpleLinuxMemoryAccess.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

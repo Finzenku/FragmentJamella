@@ -10,13 +10,13 @@ namespace FragmentJamella.Memory
     {
         private Process p;
         
-       // [DllImport("libSimpleLinuxMemoryAccess.so")]
+        [DllImport(@"Memory/libSimpleLinuxMemoryAccess.so")]
         public static extern IntPtr ReadMemory(int pid, IntPtr address, int maxLenght);
         
-       // [DllImport("libSimpleLinuxMemoryAccess.so")]
+        [DllImport(@"Memory/libSimpleLinuxMemoryAccess.so")]
         public static extern void WriteMemory(int pid, IntPtr address, byte[] value, int valueSize);
         
-       // [DllImport("libSimpleLinuxMemoryAccess.so")]
+        [DllImport(@"Memory/libSimpleLinuxMemoryAccess.so")]
         public static extern IntPtr freeingMemory(IntPtr address);
         
         [DllImport ("libc")]
@@ -25,7 +25,7 @@ namespace FragmentJamella.Memory
         public LinuxMemoryManagement(Process  process)
         {
             p = process;
-            AppDomain.CurrentDomain.AssemblyResolve+= new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+          
         }
 
         public string ReadString(IntPtr address, Encoding encoding, bool isRelative = true, int maxLength = 512)
@@ -38,7 +38,12 @@ namespace FragmentJamella.Memory
 
             freeingMemory(value);
 
-            return encoded;
+            // Search the end of the string
+            var endOfStringPosition = encoded.IndexOf('\0');
+
+            // Crop the string with this end if found, return the string otherwise
+            return endOfStringPosition == -1 ? encoded : encoded.Substring(0, endOfStringPosition);
+            //return encoded;
             
         }
 
@@ -55,7 +60,7 @@ namespace FragmentJamella.Memory
 
         public void WriteString(IntPtr address, string text, Encoding encoding, bool isRelative = true)
         {
-            byte[] value = encoding.GetBytes(text);
+            byte[] value = encoding.GetBytes(text+ '\0');
             WriteMemory(p.Id,address,value,value.Length);
         }
 
@@ -69,18 +74,6 @@ namespace FragmentJamella.Memory
         public static uint checkPrivileges()
         {
             return getuid();
-        }
-
-
-        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            using (var stream = System.Reflection.Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream(typeof(LinuxMemoryManagement).Namespace + ".libSimpleLinuxMemoryAccess.so"))
-            {
-                byte[] data = new byte[stream.Length];
-                stream.Read(data, 0, data.Length);
-                return System.Reflection.Assembly.Load(data);
-            }
         }
     }
 }
