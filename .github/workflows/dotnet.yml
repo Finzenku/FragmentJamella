@@ -1,0 +1,51 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master,dotnetcore ]
+  pull_request:
+    branches: [ master,dotnetcore ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+        #env:
+         # SHEET_SERVICE_ACCOUNT: ${{secrets.SHEET_SERVICE_ACCOUNT}}
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build Project
+        run: dotnet build -c Release --no-restore
+      - name: Build Windows files
+        working-directory: ${{github.workspace}}/FragmentJamella
+        run: dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -c Release --no-restore 
+      - name: Build Linux files
+        working-directory: ${{github.workspace}}/FragmentJamella
+        run: dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained true -c Release --no-restore
+      - name: Zip builds
+        shell: bash
+        working-directory: ${{github.workspace}}/
+        run: sh ${{github.workspace}}/archiveScript.sh
+     
+      - name: Upload  Windows Build Artifact
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          # Artifact name
+          name: fragment-jamella-win-x64.zip # optional, default is artifact
+          # A file, directory or wildcard pattern that describes what to upload
+          path: ${{github.workspace}}/builds/fragment-jamella-win-x64.zip
+      
+      - name: Upload Linux Build Artifact
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          # Artifact name
+          name: fragment-jamella-linux-x64.zip # optional, default is artifact
+          # A file, directory or wildcard pattern that describes what to upload
+          path: ${{github.workspace}}/builds/fragment-jamella-linux-x64.zip
