@@ -25,10 +25,10 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Build Windows files
         working-directory: ${{github.workspace}}/FragmentJamella
-        run: dotnet publish -r win-x64 -p:PublishSingleFile=true /p:PublishTrimmed=true --self-contained true -c Release
+        run: dotnet publish -r win-x64 -p:PublishSingleFile=true /p:PublishTrimmed=true /p:DebugType=None --self-contained true -c Release
       - name: Build Linux files
         working-directory: ${{github.workspace}}/FragmentJamella
-        run: dotnet publish -r linux-x64 -p:PublishSingleFile=true /p:PublishTrimmed=true --self-contained true -c Release
+        run: dotnet publish -r linux-x64 -p:PublishSingleFile=true /p:PublishTrimmed=true /p:DebugType=None --self-contained true -c Release
       - name: Zip builds
         shell: bash
         working-directory: ${{github.workspace}}/
