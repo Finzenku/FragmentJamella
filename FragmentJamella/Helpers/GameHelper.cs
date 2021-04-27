@@ -42,6 +42,17 @@
         public const int OFFLINE_PLAYER_POINTER = 0x2049d050;
         public const int ONLINE_PLAYER_POINTER = 0x20642780;
 
+        /*  Useful for checking of a character is logged in.
+         *  3 - Loading character from mem card
+         *  5 - Character loaded
+         *  7 - Character Selection screen
+         *  8 - Desktop
+         */
+        public const int OFFLINE_LOAD_STATE = 0x2049D1CC;
+        public const int ONLINE_LOAD_STATE = 0x2064296C;
+
+
+        //Player Data Offsets (Use Player_Pointer)
         public const int PLAYER_NAME = 0xC;
         public const int PLAYER_MODEL_STRING = 0x3C;
 
