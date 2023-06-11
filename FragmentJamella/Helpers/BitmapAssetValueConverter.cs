@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Data.Converters;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
@@ -10,6 +11,7 @@ using System.Text;
 
 namespace FragmentJamella.Helpers
 {
+    /// From https://github.com/AvaloniaUI/Avalonia/issues/3860
     /// <summary>
     /// <para>
     /// Converts a string path to a bitmap asset.
@@ -28,7 +30,7 @@ namespace FragmentJamella.Helpers
             if (value == null)
                 return null;
 
-            if (value is string rawUri && targetType == typeof(IBitmap))
+            if (value is string rawUri)
             {
                 Uri uri;
 
@@ -46,7 +48,14 @@ namespace FragmentJamella.Helpers
                 var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
                 var asset = assets.Open(uri);
 
-                return new Bitmap(asset);
+                if (targetType == typeof(IBitmap))
+                {
+                    return new Bitmap(asset);
+                }
+                else if (targetType == typeof(IImage))
+                {
+                    return new Bitmap(asset);
+                }
             }
 
             throw new NotSupportedException();
