@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   
@@ -14,15 +14,12 @@
     <Content Include="FragmentJamella.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.12" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
+    <PackageReference Include="Avalonia" Version="0.10.21" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.21" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.21" />
+    <PackageReference Include="MemoryIO.Pcsx2" Version="1.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\MemorySharp\MemorySharp.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
@@ -2243,8 +2240,5 @@
     <None Remove="Resources\Portraits\cw6ib_pp.jpeg" />
     <None Remove="Resources\Portraits\cw6ib_rd.jpeg" />
     <None Remove="Resources\Portraits\cw6ib_yl.jpeg" />
-    <None Update="Memory\libSimpleLinuxMemoryAccess.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>

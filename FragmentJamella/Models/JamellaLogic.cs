@@ -1,80 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Text;
 using FragmentJamella.Helpers;
-using FragmentJamella.Memory;
+using MemoryIO.Pcsx2;
 
 namespace FragmentJamella.Models
 {
     public class JamellaLogic
     {
         private int gGameOffset;
-        private IMemoryManagement m = null;
+        private Pcsx2MemoryIO m;
         private readonly Encoding enc;
 
-        private const string PCSX2PROCESSNAME = "pcsx2";
-        private bool pcsx2Running = false, loggedIn = false;
+        private bool loggedIn = false;
 
         public JamellaLogic()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             enc = Encoding.GetEncoding("Shift-JIS");
+            m = new Pcsx2MemoryIO(enc);
             Update_Tick();
         }
 
         
         public bool Update_Tick()
         {
-            PCSX2Check();
-            if (pcsx2Running)
+            if (!m.Pcsx2Running || !m.IsAttached)
             {
-                if (m == null)
-                {
-                    if (System.Environment.OSVersion.Platform == PlatformID.Unix ||
-                        System.Environment.OSVersion.Platform == PlatformID.MacOSX)
-                    {
-                        m = new LinuxMemoryManagement(Process.GetProcessesByName(PCSX2PROCESSNAME)[0]);
-                    }
-                    else
-                    {
-                        m = new WindowsMemoryManagement(Process.GetProcessesByName(PCSX2PROCESSNAME)[0]);
-                    }
-                }
+                m.Update();
+            }
+            if (m.IsAttached)
+            {
                 SetGameOffset();
             }
-            return pcsx2Running && loggedIn;
-        }
-        private void PCSX2Check()
-        {
-            if (System.Environment.OSVersion.Platform == PlatformID.Unix ||
-                System.Environment.OSVersion.Platform == PlatformID.MacOSX)
-            {
-                if (LinuxMemoryManagement.getuid() != 0)
-                {
-                    //throw new Exception("Not running as root");
-                }
-            }
-            Process[] pcsx2 = Process.GetProcessesByName(PCSX2PROCESSNAME);
-            if (pcsx2.Length > 0)
-            {
-                pcsx2Running = true;
-            }
-            else
-            {
-                pcsx2Running = false;
-            }
+            return m.IsAttached && loggedIn;
         }
 
         private void SetGameOffset()
         {
-            if (pcsx2Running)
+            if (m.IsAttached)
             {
                 int luiHeap = 0;
                 try 
                 {
-                    luiHeap = m.Read<byte>(new IntPtr(GameHelper.LUI_HEAP), false);
+                    luiHeap = m.Read<byte>(GameHelper.LUI_HEAP);
                 }
                 catch (Win32Exception e)
                 {
@@ -83,15 +52,15 @@ namespace FragmentJamella.Models
                 //Online
                 if (GameHelper.GetCurrentElfFile(luiHeap) == GameHelper.CurrentElf.ONLINE)
                 {
-                    gGameOffset = m.Read<int>(new IntPtr(GameHelper.ONLINE_PLAYER_POINTER), false) + 0x20000000;
-                    if (m.Read<int>(new IntPtr(GameHelper.ONLINE_LOAD_STATE), false) == 5) loggedIn = true;
+                    gGameOffset = m.Read<int>(new IntPtr(GameHelper.ONLINE_PLAYER_POINTER));
+                    if (m.Read<int>(new IntPtr(GameHelper.ONLINE_LOAD_STATE)) == 5) loggedIn = true;
                     else loggedIn = false;
                 }
                 //Offline
                 else if (GameHelper.GetCurrentElfFile(luiHeap) == GameHelper.CurrentElf.OFFLINE)
                 {
-                    gGameOffset = m.Read<int>(new IntPtr(GameHelper.OFFLINE_PLAYER_POINTER), false) + 0x20000000;
-                    if (m.Read<int>(new IntPtr(GameHelper.OFFLINE_LOAD_STATE), false) == 5) loggedIn = true;
+                    gGameOffset = m.Read<int>(new IntPtr(GameHelper.OFFLINE_PLAYER_POINTER));
+                    if (m.Read<int>(new IntPtr(GameHelper.OFFLINE_LOAD_STATE)) == 5) loggedIn = true;
                     else loggedIn = false;
                 }
                 else loggedIn = false;
@@ -100,12 +69,12 @@ namespace FragmentJamella.Models
 
         public string GetGameMode()
         {
-            if (pcsx2Running)
+            if (m.IsAttached)
             {
                 int luiHeap = 0;
                 try
                 {
-                    luiHeap = m.Read<byte>(new IntPtr(GameHelper.LUI_HEAP), false);
+                    luiHeap = m.Read<byte>(new IntPtr(GameHelper.LUI_HEAP));
                 }
                 catch (Win32Exception e)
                 {
@@ -127,26 +96,26 @@ namespace FragmentJamella.Models
 
         public string GetCharacterName()
         {
-            if (pcsx2Running && loggedIn) return m.ReadString(new IntPtr(gGameOffset + GameHelper.PLAYER_NAME), enc, false);
+            if (m.IsAttached && loggedIn) return m.ReadString(new IntPtr(gGameOffset + GameHelper.PLAYER_NAME), enc);
             return "";
         }
         public string GetWarning()
         {
-            if (pcsx2Running && loggedIn) return "";
-            else if (!pcsx2Running) return "Cannot Find PCSX2";
+            if (m.IsAttached && loggedIn) return "";
+            else if (!m.IsAttached) return "Cannot Find PCSX2";
             return "Character Not Logged In";
         }
 
         public int[] GetModelValues()
         {
-            if (pcsx2Running && loggedIn)
+            if (m.IsAttached && loggedIn)
             {
                 return new int[] {
-                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_CLASS), false),
-                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_MODEL), false),
-                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_COLOR), false),
-                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE), false) / 3,
-                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE), false) % 3};
+                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_CLASS)),
+                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_MODEL)),
+                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_COLOR)),
+                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE)) / 3,
+                m.Read<byte>(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE)) % 3};
             }
             else return new int[] { 0, 0, 0, 1, 1 };
         }
@@ -189,44 +158,44 @@ namespace FragmentJamella.Models
         {
             string newmodel = GetModelFromData(charClass, charModelNum, charColor, charHeight, charWidth);
 
-            if (pcsx2Running && loggedIn)
+            if (m.IsAttached && loggedIn)
             {
-                m.WriteString(new IntPtr(gGameOffset + GameHelper.PLAYER_MODEL_STRING), newmodel, enc, false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_CLASS), (byte)charClass, false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_CLASS), (byte)charClass, false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_MODEL), (byte)charModelNum, false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_COLOR), (byte)charColor, false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE), (byte)(3 * charHeight + charWidth), false);
+                m.WriteString(new IntPtr(gGameOffset + GameHelper.PLAYER_MODEL_STRING), newmodel, enc);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_CLASS), (byte)charClass);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_CLASS), (byte)charClass);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_MODEL), (byte)charModelNum);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_COLOR), (byte)charColor);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_CHARACTER_SIZE), (byte)(3 * charHeight + charWidth));
             }
         }
 
         public void updateStats(int[] statSliders = null)
         {
 
-            if (pcsx2Running && loggedIn)
+            if (m.IsAttached && loggedIn)
             {
-                string model = m.ReadString(new IntPtr(gGameOffset + GameHelper.PLAYER_MODEL_STRING), enc, false);
-                int level = m.Read<short>(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_LEVEL), false);
+                string model = m.ReadString(new IntPtr(gGameOffset + GameHelper.PLAYER_MODEL_STRING), enc);
+                int level = m.Read<short>(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_LEVEL));
                 int[] newstats = StatHelper.GetStats(model, level, statSliders);
 
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_HP), (short)newstats[0], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_SP), (short)newstats[1], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PATK), (short)newstats[2], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PDEF), (short)newstats[3], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PHIT), (short)newstats[4], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PEVA), (short)newstats[5], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MATK), (short)newstats[6], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MDEF), (short)newstats[7], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MHIT), (short)newstats[8], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MEVA), (short)newstats[9], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_EARTH), (short)newstats[10], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_WATER), (short)newstats[11], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_FIRE), (short)newstats[12], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_WOOD), (short)newstats[13], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_THUNDER), (short)newstats[14], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_DARK), (short)newstats[15], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MIND), (short)newstats[16], false);
-                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_BODY), (short)newstats[17], false);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_HP), (short)newstats[0]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_SP), (short)newstats[1]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PATK), (short)newstats[2]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PDEF), (short)newstats[3]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PHIT), (short)newstats[4]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_PEVA), (short)newstats[5]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MATK), (short)newstats[6]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MDEF), (short)newstats[7]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MHIT), (short)newstats[8]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MEVA), (short)newstats[9]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_EARTH), (short)newstats[10]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_WATER), (short)newstats[11]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_FIRE), (short)newstats[12]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_WOOD), (short)newstats[13]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_THUNDER), (short)newstats[14]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_DARK), (short)newstats[15]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_MIND), (short)newstats[16]);
+                m.Write(new IntPtr(gGameOffset + GameHelper.PLAYER_STATS_BODY), (short)newstats[17]);
             }
         }
         

@@ -2,10 +2,10 @@
 {
     public static class GameHelper
     {
-        public const string CONNECTED_TO_AS_ADDRESS = "206F92F0";
+        public const string CONNECTED_TO_AS_ADDRESS = "6F92F0";
         //This points to some player information. I dunno, I stole it from the player bar code. 
-        public const string LOGGED_IN_OFFLINE_MODE = "20734740";
-        public const int LUI_HEAP = 0x20100120;
+        public const string LOGGED_IN_OFFLINE_MODE = "734740";
+        public const int LUI_HEAP = 0x100120;
 
         public enum CurrentElf
         {
@@ -39,8 +39,8 @@
         }
 
         //Address to global pointer for PLAYER instance, which should stay the same regardless to any file changes.
-        public const int OFFLINE_PLAYER_POINTER = 0x2049d050;
-        public const int ONLINE_PLAYER_POINTER = 0x20642780;
+        public const int OFFLINE_PLAYER_POINTER = 0x49d050;
+        public const int ONLINE_PLAYER_POINTER = 0x642780;
 
         /*  Useful for checking of a character is logged in.
          *  3 - Loading character from mem card
@@ -48,8 +48,8 @@
          *  7 - Character Selection screen
          *  8 - Desktop
          */
-        public const int OFFLINE_LOAD_STATE = 0x2049D1CC;
-        public const int ONLINE_LOAD_STATE = 0x2064296C;
+        public const int OFFLINE_LOAD_STATE = 0x49D1CC;
+        public const int ONLINE_LOAD_STATE = 0x64296C;
 
 
         //Player Data Offsets (Use Player_Pointer)
