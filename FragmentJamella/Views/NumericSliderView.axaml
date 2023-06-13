@@ -18,7 +18,7 @@
                    BorderThickness="0.2" BorderBrush="Transparent" 
                    VerticalAlignment="Center" ShowButtonSpinner="False"  />
     
-    <Slider Value="{Binding #Numeric.Value}" Maximum="99" Minimum="0"
+    <Slider Value="{Binding Value}" Maximum="99" Minimum="0"
             Name="NumSlider" SmallChange="1" LargeChange="5"
             TickFrequency="1" IsSnapToTickEnabled="True"
             VerticalAlignment="Center"/>
