@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Text;
 
 namespace FragmentJamella.ViewModels
@@ -13,15 +14,7 @@ namespace FragmentJamella.ViewModels
         public int Bonus { get => _bonus; set => this.RaiseAndSetIfChanged(ref _bonus, value); }
         public string Text { get => _text; set => this.RaiseAndSetIfChanged(ref _text, value); }
         public int Maximum { get => _maximum; set => this.RaiseAndSetIfChanged(ref _maximum, value); }
-        public int Value 
-        {   
-            get => _value;
-            set
-            {
-                if (value > Maximum) this.RaiseAndSetIfChanged(ref _value, Maximum);
-                else this.RaiseAndSetIfChanged(ref _value, value);
-            }
-        }
+        public int Value { get => _value; set => this.RaiseAndSetIfChanged(ref _value, value); }
 
         public NumericSliderViewModel()
         {
@@ -39,6 +32,7 @@ namespace FragmentJamella.ViewModels
             Bonus = bonus;
 
             this.WhenAnyValue(x => x.Bonus).Subscribe(x => this.RaisePropertyChanged("BonusText"));
+            this.WhenAnyValue(x => x.Value).Where(value => value > Maximum).Subscribe(_ => Value = Maximum);
         }
     }
 }
